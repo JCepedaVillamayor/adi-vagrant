@@ -15,6 +15,7 @@ Vagrant.configure("2") do |config|
     backend.vm.network "forwarded_port", guest: 80, host: 5000
 
     backend.vm.post_up_message = "backend is ready"
+    backend.vm.graceful_halt_timeout = 30
 
     backend.vm.provider "virtualbox" do |vbox|
       vbox.memory = 2048
@@ -25,6 +26,7 @@ Vagrant.configure("2") do |config|
   config.vm.define "jcp_frontend" do |front|
     front.vm.hostname = "jcp-front"
     front.vm.network "forwarded_port", guest: 80, host: 6000
+    front.vm.graceful_halt_timeout = 30
 
     front.vm.post_up_message = "frontend is ready"
 

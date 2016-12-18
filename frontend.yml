@@ -1,0 +1,48 @@
+- hosts: jcv-frontend
+  remote_user: vagrant
+  become: yes
+
+  vars:
+    LOCAL_PROJECT_HOME: "./frontend"
+    PROJECT_HOME: "/home/vagrant"
+    MAIN_PY: "songsClient.py" # main file to launch website
+    PORT: 8000 # port of the website
+    base_packages:
+      - python-pip
+      - lsof
+    python_packages:
+      - flask
+      - flask-sqlalchemy
+      - flask-oauthlib
+
+  tasks:
+    - name: Copy files to container
+      copy: src={{ LOCAL_PROJECT_HOME }} dest={{ PROJECT_HOME }} mode=0755
+
+    - name: Install system packages
+      apt: name={{ item }} state=latest update_cache=yes cache_valid_time=3600
+      become: yes
+      with_items: "{{ base_packages }}"
+
+    - name: Install program dependencies
+      pip: name={{ item }}
+      with_items: "{{ python_packages }}"
+
+    - name: Get process id running the webserver
+      shell: lsof -t -i:{{PORT}}
+      become: yes
+      ignore_errors: yes
+      register: pid
+
+    - name: Kill webserver if it is already running
+      shell: kill {{ item }}
+      with_items: "{{ pid.stdout.split('\n') }}"
+      when: pid.stdout != ""
+
+      ignore_errors: yes
+
+    - name: Launch flask website
+      shell: "nohup python {{PROJECT_HOME}}/frontend/{{MAIN_PY}} 2>&1 >/dev/null &"
+
+    - name: Wait for website port to become available
+      wait_for: port={{PORT}} delay=1

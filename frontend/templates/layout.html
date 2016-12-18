@@ -1,0 +1,25 @@
+<!doctype html>
+<head>
+<title>My playlist client</title>
+<link rel=stylesheet type=text/css href="{{ url_for('static',
+  filename='style.css') }}">
+</head>
+<body>
+<h1>Playlists - Web Client</h1>
+  {% if g.user %}
+  <a href="{{ url_for('logout') }}">sign out</a>
+  {% else %}
+  <a href="{{ url_for('login') }}">sign in</a>
+  {% endif %}
+
+{% for message in get_flashed_messages(category_filter=["error"]) %}
+  <p class=error>{{ message }}</p>
+  {% endfor %}
+  
+{% for message in get_flashed_messages(category_filter=["success"]) %}
+  <p class=message>{{ message }}</p>
+{% endfor %}
+
+{% block body %}{% endblock %}
+</body>
+</html>

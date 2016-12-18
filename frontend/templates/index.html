@@ -1,0 +1,40 @@
+{% extends "layout.html" %}
+{% block body %}
+    <form action="{{ url_for('delSong') }}"  method=post>
+      <p>
+	Song ID: 
+        <input type=text name=songID size=20>
+        <input type=submit value="Delete Song">
+      </p>
+    </form>
+    <form action="{{ url_for('addSong') }}"  method=post>
+      <p>
+	Title:  
+        <input type=text name=songTitle size=20>
+	Album: 
+        <input type=text name=songAlbum size=20>
+        <input type=submit value="Add Song">
+      </p>
+    </form>
+
+    <br/>
+    <h3>Available Songs</h3>
+    {% if songs %}
+    <ul>
+    {% for itSong in songs %}
+      <li>{{itSong.id}} - Title: {{ itSong.title }} - Album: {{itSong.album}}</li>
+    {% endfor %}
+    </ul>
+    {% else %}
+    
+    {% if g.user %}
+    <p>
+      None
+    </p>
+    {% else %}
+    <p>
+      You have to log in to view the available songs
+    </p>
+  {% endif %}
+  {% endif %}
+{% endblock %}

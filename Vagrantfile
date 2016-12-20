@@ -12,8 +12,8 @@ Vagrant.configure("2") do |config|
 
 
   config.vm.define "jcv-backend" do |backend|
-
-    backend.vm.network "public_network", type: "dhcp"
+    backend.vm.hostname = "jcv-backend"
+    backend.vm.network "public_network", type: "dhcp", bridge: "wlan0"
     backend.vm.network "forwarded_port", guest: 8000, host: 8000
 
     config.vm.provision "ansible" do |ansible|
@@ -32,8 +32,8 @@ Vagrant.configure("2") do |config|
   end
 
   config.vm.define "jcv-frontend" do |front|
-    front.vm.host_name = "jcp-front"
-    front.vm.network "public_network", type: "dhcp"
+    front.vm.hostname = "jcv-frontend"
+    front.vm.network "public_network", type: "dhcp", bridge: "wlan0"
     front.vm.network "forwarded_port", guest: 9000, host: 8500
 
     front.vm.graceful_halt_timeout = 30

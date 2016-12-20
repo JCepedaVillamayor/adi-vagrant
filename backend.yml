@@ -6,7 +6,7 @@
     LOCAL_PROJECT_HOME: "./backend"
     PROJECT_HOME: "/home/vagrant"
     MAIN_PY: "backend.py" # main file to launch website
-    PORT: 5000 # port of the website
+    PORT: 8000 # port of the website
     base_packages:
       - python-pip
       - lsof

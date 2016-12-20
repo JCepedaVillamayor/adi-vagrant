@@ -18,10 +18,10 @@ remote = oauth.remote_app(
     consumer_key=CLIENT_ID,
     consumer_secret=CLIENT_SECRET,
     request_token_params={'scope': 'email'},
-    base_url='http://127.0.0.1:5000/',
-    request_token_url=None,
-    access_token_url='http://127.0.0.1:5000/oauth/token',
-    authorize_url='http://127.0.0.1:5000/oauth/authorize'
+    base_url='http://172.19.145.246:8000/',
+    request_token_url='http://172.19.145.246:8000/oaut/authorized',
+    access_token_url='http://172.19.145.246:8000/oauth/token',
+    authorize_url='http://172.19.145.246:8000/oauth/authorize'
 )
 
 
@@ -122,4 +122,4 @@ if __name__ == '__main__':
     import os
     os.environ['DEBUG'] = 'true'
     os.environ['OAUTHLIB_INSECURE_TRANSPORT'] = 'true'
-    app.run(host='0.0.0.0', port=8000, debug=True)
+    app.run(host='0.0.0.0', port=9000, debug=True)

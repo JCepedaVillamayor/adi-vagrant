@@ -9,10 +9,12 @@ Vagrant.configure("2") do |config|
   config.vm.box = "debian/jessie64"
   config.vm.usable_port_range=(4000..9000)
 
+
+
   config.vm.define "jcv-backend" do |backend|
-    backend.vm.hostname = "jcp-backend"
-    config.vm.network "public_network", type: "dhcp", bridge: "wlan0"
-    backend.vm.network "forwarded_port", guest: 5000, host: 5000
+
+    backend.vm.network "public_network", type: "dhcp"
+    backend.vm.network "forwarded_port", guest: 8000, host: 8000
 
     config.vm.provision "ansible" do |ansible|
       ansible.verbose = "v"
@@ -30,9 +32,9 @@ Vagrant.configure("2") do |config|
   end
 
   config.vm.define "jcv-frontend" do |front|
-    front.vm.hostname = "jcp-front"
-    config.vm.network "public_network", type: "dhcp", bridge: "wlan0"
-    front.vm.network "forwarded_port", guest: 8000, host: 6000
+    front.vm.host_name = "jcp-front"
+    front.vm.network "public_network", type: "dhcp"
+    front.vm.network "forwarded_port", guest: 9000, host: 8500
 
     front.vm.graceful_halt_timeout = 30
     front.vm.post_up_message = "frontend is ready"
